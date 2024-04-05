@@ -1,5 +1,8 @@
 const express = require('express');
 const connectDB = require('./db/connect.js');
+const authRoute = require('./routes/authRoute.js');
+const notFoundMiddleware = require('./middleware/not-found.js');
+const errorHandlerMiddleware = require('./middleware/error-handler.js');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
@@ -8,16 +11,17 @@ const app = express();
 
 
 // middleware
+app.use(express.static('./public'));
 app.use(express.json());
 
+
 // routes
+app.use('/api/v1', authRoute);
 
 
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
-
-app.get('/', (req, res) => {
-    res.send('<h1>JWT Basic</h1>');
-});
 
 const start = async () => {
     try {

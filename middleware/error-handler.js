@@ -1,6 +1,7 @@
-import { CustomAPIError } from "../errors/custom-error.js";
+const { CustomAPIError } = require("../errors/custom-error");
 
 const errorHandlerMiddleware = (err, req, res, next) => {
+  console.log("From error-handler.js: ", err);
   if(err instanceof CustomAPIError){
     return res.status(err.statusCode).json({ message: err.message });
   }
@@ -9,4 +10,4 @@ const errorHandlerMiddleware = (err, req, res, next) => {
 }
 
 
-export default errorHandlerMiddleware;
+module.exports = errorHandlerMiddleware;
